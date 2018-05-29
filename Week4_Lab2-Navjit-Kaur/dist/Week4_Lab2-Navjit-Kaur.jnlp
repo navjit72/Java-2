@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Week4_Lab2-Navjit-Kaur.jnlp">
+  <information>
+    <title>Week4_Lab2-Navjit-Kaur</title>
+    <vendor>NAVJIT</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Week4_Lab2-Navjit-Kaur.jar" size="4267" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Week4_Lab2-Navjit-Kaur" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="week4_lab2.navjit.kaur.Week4_Lab2NavjitKaur"  name="Week4_Lab2-Navjit-Kaur" />
+  <update check="always"/>
+</jnlp>
