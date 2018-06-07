@@ -15,14 +15,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -43,7 +40,7 @@ public class NavjitKaurAssignment1 extends Application {
     //Creating Controls
     Button submit = new Button("Submit");
     Pane pane = new Pane();
-    Pane piePane = new Pane();
+    PieChart chart;
     GridPane grid = new GridPane();
     Label title = new Label("Employee Expense Form");
     Label name = new Label("Employee");
@@ -75,7 +72,7 @@ public class NavjitKaurAssignment1 extends Application {
     double am1 = 0, am2 = 0, am3 = 0, am4 = 0;
 
     //method to calculate total amount.
-    private double CalculateTotal() {
+    private double calculateTotal() {
         if (txtAmount1.getText().isEmpty()) {
             am1 = 0;
         } else {
@@ -101,7 +98,7 @@ public class NavjitKaurAssignment1 extends Application {
     }
 
     //method to fill all the comboboxes with 4 categories.
-    private void FillComboBox() {
+    private void fillComboBox() {
         categoryList1.getItems().addAll("Food", "Transportation", "Lodging", "Other");
         categoryList2.getItems().addAll("Food", "Transportation", "Lodging", "Other");
         categoryList3.getItems().addAll("Food", "Transportation", "Lodging", "Other");
@@ -109,7 +106,7 @@ public class NavjitKaurAssignment1 extends Application {
     }
 
     //method to add all controls in grid pane.
-    private void PreparePane() {
+    private void preparePane() {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 10, 0, 10));
@@ -144,7 +141,7 @@ public class NavjitKaurAssignment1 extends Application {
     }
 
     //method to read data from employee_info.txt file.
-    private void ReadFile() {
+    private void readFile() {
         File file = new File("employee_info.txt");
         try {
             Scanner input = new Scanner(file);
@@ -163,7 +160,7 @@ public class NavjitKaurAssignment1 extends Application {
     }
 
     //method to write all the information into expenses.txt file.
-    private void WriteFile() {
+    private void writeFile() {
         PrintWriter fw = null;
         try {
             fw = new PrintWriter("expenses.txt");
@@ -205,25 +202,44 @@ public class NavjitKaurAssignment1 extends Application {
     }
 
     //method to create the piechart according to the filled data.
-    private void CreatePieChart(Stage stage) {
+    private void createPieChart() {
         ObservableList<PieChart.Data> pieChartData
                 = FXCollections.observableArrayList(
                         new PieChart.Data(categoryList1.getValue(), am1),
                         new PieChart.Data(categoryList2.getValue(), am2),
                         new PieChart.Data(categoryList3.getValue(), am3),
                         new PieChart.Data(categoryList4.getValue(), am4));
-        PieChart chart = new PieChart(pieChartData);
-        piePane.getChildren().add(chart);
-        piePane.setTranslateX(300);
-        piePane.setTranslateY(0);
-        piePane.setPrefSize(10, 10);
-        piePane.setBorder(1);
-        
+        chart = new PieChart(pieChartData);
+        chart.setPrefSize(400, 400);
+        chart.setMaxSize(700, 700);
+        chart.setMinSize(400, 400);
+        chart.setTranslateX(450);
+        pane.getChildren().addAll(chart,addCaption());
         chart.setLegendVisible(false);
     }
 
+    //method to add captions when particular node is clicked.
+    private Label addCaption() {
+        final Label caption = new Label("");
+        caption.setTextFill(Color.BLACK);
+        caption.setStyle("-fx-font: 16 arial;");
+
+        for (final PieChart.Data data : chart.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+                    new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    caption.setTranslateX(e.getSceneX());
+                    caption.setTranslateY(e.getSceneY());
+                    caption.setText("$"+String.valueOf(data.getPieValue()));
+                }
+            });
+        }
+        return caption;
+    }
+
     //method to clear all the fields and refresh the form.
-    private void RefreshPage() {
+    private void refreshPage() {
         txtDate.setValue(null);
         txtDest.clear();
         txtAmount1.clear();
@@ -242,36 +258,35 @@ public class NavjitKaurAssignment1 extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        FillComboBox();
-        PreparePane();
-        ReadFile();
+        fillComboBox();
+        preparePane();
+        readFile();
         txtAmount1.textProperty().addListener((observable) -> {
-            txtTotalAmount.setText(String.valueOf(CalculateTotal()));
+            txtTotalAmount.setText(String.valueOf(calculateTotal()));
         });
 
         txtAmount2.textProperty().addListener((observable) -> {
-            txtTotalAmount.setText(String.valueOf(CalculateTotal()));
+            txtTotalAmount.setText(String.valueOf(calculateTotal()));
         });
 
         txtAmount3.textProperty().addListener((observable) -> {
-            txtTotalAmount.setText(String.valueOf(CalculateTotal()));
+            txtTotalAmount.setText(String.valueOf(calculateTotal()));
         });
 
         txtAmount4.textProperty().addListener((observable) -> {
-            txtTotalAmount.setText(String.valueOf(CalculateTotal()));
+            txtTotalAmount.setText(String.valueOf(calculateTotal()));
         });
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                WriteFile();
-                CreatePieChart(primaryStage);
-                RefreshPage();
+                writeFile();
+                createPieChart();
+                refreshPage();
             }
         });
         pane.getChildren().add(grid);
-        pane.getChildren().add(piePane);
 
         Scene scene = new Scene(pane, 700, 550);
         primaryStage.setScene(scene);
