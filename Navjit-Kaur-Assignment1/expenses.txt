@@ -1,0 +1,13 @@
+Name : Navjit Kaur
+ID : 2423425
+Date : null
+Destination : 
+Category 1: 
+Food :-  , Amount : 535
+Category 2: 
+Transportation :-  , Amount : 756
+Category 3: 
+Lodging :-  , Amount : 246
+Category 4: 
+Other :-  , Amount : 644
+Total Amount : 2181.0
