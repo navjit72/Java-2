@@ -6,12 +6,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -74,6 +72,8 @@ public class Week5CLassActivity extends Application {
             bPane.setCenter(drawPane);
 
             Scene scene = new Scene(bPane, 300, 250);
+            scene.getStylesheets().add(Week5CLassActivity.class.getResource("draw.css").toExternalForm());
+            drawPane.getStyleClass().add("drawPane");
             primaryStage.setTitle("Shape");
             primaryStage.setScene(scene);
             primaryStage.show();
