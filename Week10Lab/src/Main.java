@@ -42,7 +42,7 @@ public class Main {
                     }
                     case 4:
                     {
-                        System.out.println("Enter the actor id you wan tto update : ");
+                        System.out.println("Enter the actor id you want to update : ");
                         actor.setActor_id(input.nextInt());
                         System.out.println("Enter the details of actor in the order of firstname, lastname : ");
                         actor.setFirst_name(input.next());
@@ -51,6 +51,15 @@ public class Main {
                             System.out.println("Row updated successfully");
                         else
                             System.out.println("Row updation failed");
+                        break;
+                    }
+                    case 5:
+                    {
+                        System.out.println("Enter the actor id you want to delete : ");
+                        if(ActorMgr.deleteRecord(input.nextInt()))
+                            System.out.println("Row deleted successfully");
+                        else
+                            System.out.println("Row deletion failed");
                         break;
                     }
                     case 6:

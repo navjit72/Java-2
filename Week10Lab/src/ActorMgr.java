@@ -75,4 +75,20 @@ public class ActorMgr {
         }
         return true;
     }
+
+    public static boolean deleteRecord(int actor_id){
+        int result=0;
+        try{
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/sakila", "root", "navjithumber");
+            preparedStatement = connection.prepareStatement("delete from actor set where actor_id=?");
+            preparedStatement.setInt(1,actor_id);
+            result=preparedStatement.executeUpdate();
+            if(result<=0)
+                return false;
+
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return true;
+    }
 }
